@@ -1,14 +1,26 @@
 import { Nav } from "react-bootstrap";
 import "./ContractsSidebar.css";
 import PdfSidebarCard from "./PdfSidebarCard";
-import { PdfDocument, PdfDocumentListItem } from "./PdfDocumentModel";
+import { PdfDocument } from "./PdfDocumentModel";
+import { useEffect, useState } from "react";
 
 interface Props {
-  pdfDocuments: PdfDocumentListItem[];
+  pdfDocuments: PdfDocument[];
   setCurrentDocument: (document: PdfDocument) => void;
+  isLoading: boolean;
 }
 
-function ContractsSidebar({ pdfDocuments, setCurrentDocument }: Props) {
+function ContractsSidebar({
+  pdfDocuments,
+  setCurrentDocument,
+  isLoading,
+}: Props) {
+  const [documents, setDocuments] = useState(pdfDocuments);
+
+  useEffect(() => setDocuments(pdfDocuments), [pdfDocuments]);
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
   return (
     <>
       <Nav
@@ -17,7 +29,7 @@ function ContractsSidebar({ pdfDocuments, setCurrentDocument }: Props) {
         onSelect={(selectedKey) => alert(`selected ${selectedKey}`)}
       >
         <div className="sidebar-sticky"></div>
-        {pdfDocuments.map((pdfDocument, index) => (
+        {documents?.map((pdfDocument, index) => (
           <PdfSidebarCard
             key={index}
             pdfDocument={pdfDocument}

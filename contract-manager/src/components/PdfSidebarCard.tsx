@@ -1,29 +1,29 @@
 import React from "react";
 import { Card, Button } from "react-bootstrap";
-import { PdfDocument, PdfDocumentListItem } from "./PdfDocumentModel";
+import { PdfDocument } from "./PdfDocumentModel";
 import { useAxios } from "./Context/AuthContext/SimpleAxiosContextWithAuth";
 
 interface Props {
-  pdfDocument: PdfDocumentListItem;
+  pdfDocument: PdfDocument;
   setCurrentDocument: (document: PdfDocument) => void;
 }
-const dummyPdfDocuments: PdfDocument[] = [
-  {
-    pdfName: "Document 1",
-    id: 1,
-    text: "test1",
-  },
-  {
-    pdfName: "Document 2",
-    id: 2,
-    text: "test2",
-  },
-  {
-    pdfName: "Document 3",
-    id: 3,
-    text: "test3",
-  },
-];
+// const dummyPdfDocuments: PdfDocument[] = [
+//   {
+//     fileName: "Document 1",
+//     PDF_ID: "1",
+//     text: "test1",
+//   },
+//   {
+//     fileName: "Document 2",
+//     PDF_ID: "2",
+//     text: "test2",
+//   },
+//   {
+//     fileName: "Document 3",
+//     PDF_ID: "3",
+//     text: "test3",
+//   },
+// ];
 
 const PdfSidebarCard: React.FC<Props> = ({
   pdfDocument,
@@ -32,23 +32,25 @@ const PdfSidebarCard: React.FC<Props> = ({
   const { axiosApi } = useAxios();
 
   const handleClick = (e: any) => {
-    // axiosApi.get<PdfDocument>(`pdf/${pdfDocument.id}`).then((res) => {
-    //   setCurrentDocument(res.data);
-    // });
+    axiosApi.get<PdfDocument>(`pdf/${pdfDocument.PDF_ID}`).then((res) => {
+      setCurrentDocument(res.data);
+    });
 
-    setCurrentDocument(
-      dummyPdfDocuments.find((document) => document.id == pdfDocument.id) ?? {
-        id: 0,
-        pdfName: "",
-        text: "",
-      }
-    );
+    // setCurrentDocument(
+    //   dummyPdfDocuments.find(
+    //     (document) => document.fileName == pdfDocument.PDF_ID
+    //   ) ?? {
+    //     PDF_ID: "",
+    //     fileName: "",
+    //     text: "",
+    //   }
+    // );
   };
 
   return (
     <Card className="pdf-card">
       <Card.Body>
-        <Card.Title>{pdfDocument.pdfName}</Card.Title>
+        <Card.Title>{pdfDocument.fileName}</Card.Title>
         <Button variant="primary" onClick={handleClick}>
           View
         </Button>

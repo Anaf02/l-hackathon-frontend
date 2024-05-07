@@ -12,10 +12,11 @@ function AppRouter() {
       <Route path="/" element={<TestPage />} />
       <Route path="/home" element={<Home />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/contracts" element={<Contracts />} />
 
-      <Route element={<ProtectedRoute />}>
+      {/* <Route element={<ProtectedRoute />}>
         <Route path="/contracts" element={<Contracts />} />
-      </Route>
+      </Route> */}
     </Routes>
   );
 }

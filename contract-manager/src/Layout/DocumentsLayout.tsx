@@ -10,17 +10,21 @@
 
 import { Col, Row } from "react-bootstrap";
 import ContractsSidebar from "../components/ContractsSidebar";
-import {
-  PdfDocument,
-  PdfDocumentListItem,
-} from "../components/PdfDocumentModel";
-import { useState } from "react";
+import { PdfDocument } from "../components/PdfDocumentModel";
+import { useEffect, useState } from "react";
+import PdfTextViewer from "../components/PdfTextViewer";
+import PdfEditableTextViewer from "../components/PdfEditableTextViewer";
 
 interface Props {
-  pdfDocuments: PdfDocumentListItem[];
+  pdfDocuments: PdfDocument[];
+  isLoading: boolean;
+  // userRole: string;
 }
 
-function DocumentsLayout({ pdfDocuments }: Props) {
+function DocumentsLayout({ pdfDocuments, isLoading }: Props) {
+  const [documents, setDocuments] = useState(pdfDocuments);
+
+  useEffect(() => setDocuments(pdfDocuments), [pdfDocuments]);
   const [currentDocument, setCurrentDocument] = useState<PdfDocument>();
 
   return (
@@ -33,12 +37,17 @@ function DocumentsLayout({ pdfDocuments }: Props) {
       <Row>
         <Col>
           <ContractsSidebar
-            pdfDocuments={pdfDocuments}
+            pdfDocuments={documents}
             setCurrentDocument={setCurrentDocument}
+            isLoading={isLoading}
           ></ContractsSidebar>
         </Col>
         <Col>
           {/*TODO: document viewer area for the pdf text that is received, and additional save button for finance*/}
+          <PdfTextViewer text={currentDocument?.text}></PdfTextViewer>
+          <PdfEditableTextViewer
+            text={currentDocument?.text}
+          ></PdfEditableTextViewer>
         </Col>
         <Col>{/* TODO: right sideBar */}</Col>
       </Row>

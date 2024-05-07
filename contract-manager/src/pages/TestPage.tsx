@@ -10,67 +10,77 @@ import {
   PdfDocument,
   PdfDocumentListItem,
 } from "../components/PdfDocumentModel";
+import PdfTextViewer from "../components/PdfTextViewer";
 // TODO for login page: implement login form (with username and password);
 // Call the simple auth hook here and on submit use the login function
 // (copy and change the example with text field and password field instead of select)
 
+type UserDictionary = { [id: string]: SimpleUserModel };
+
 function TestPage() {
-  const dummyPdfDocuments: PdfDocumentListItem[] = [
-    {
-      pdfName: "Document 1",
-      id: 1,
-    },
-    {
-      pdfName: "Document 2",
-      id: 2,
-    },
-    {
-      pdfName: "Document 3",
-      id: 3,
-    },
-  ];
+  // const dummyPdfDocuments: PdfDocumentListItem[] = [
+  //   {
+  //     fileName: "Document 1",
+  //     PDF_ID: "1",
+  //   },
+  //   {
+  //     fileName: "Document 2",
+  //     PDF_ID: "2",
+  //   },
+  //   {
+  //     fileName: "Document 3",
+  //     PDF_ID: "3",
+  //   },
+  // ];
 
   //login task
   //const { login } = useSimpleAuth();
-  const [username, setUsername] = useState<string>("1");
-  const [password, setPassword] = useState<string>("1");
+  // const [username, setUsername] = useState<string>("1");
+  // const [password, setPassword] = useState<string>("1");
 
-  const handleSubmit = (formData: any) => {
-    formData.preventDefault();
-    console.log(username);
-    const loginModel: SimpleLoginModel = {
-      username: username,
-      password: password,
-    };
+  // const handleSubmit = (formData: any) => {
+  //   formData.preventDefault();
+  //   console.log(username);
+  //   const loginModel: SimpleLoginModel = {
+  //     username: username,
+  //     password: password,
+  //   };
 
-    //login(loginModel);
-  };
+  //   //login(loginModel);
+  // };
 
   const { axiosApi } = useAxios();
   const [currentDocument, setCurrentDocument] = useState<PdfDocument>();
 
-  // const [users, setUsers] = useState<SimpleUserModel[]>([]);
-  // useEffect(() => {
-  //   axiosApi.get<SimpleUserModel[]>("users").then((res) => {
-  //     setUsers(res.data);
-  //   });
-  // }, []);
+  const [users, setUsers] = useState<UserDictionary>({});
+  useEffect(() => {
+    axiosApi.get<UserDictionary>("/user").then((res) => {
+      setUsers(res.data);
+    });
+  }, []);
+
+  console.log(users);
 
   return (
     <>
       <Row>
-        <Col>
-          <ContractsSidebar
+        <Col className="md-2 sm-2 xl-2">
+          {/* <ContractsSidebar
             pdfDocuments={dummyPdfDocuments}
             setCurrentDocument={setCurrentDocument}
-          ></ContractsSidebar>
+          ></ContractsSidebar> */}
         </Col>
-        <Col className="md-5">
+        {/* <Col className="md-5">
           {currentDocument?.id}
-          {currentDocument?.pdfName}
+          {currentDocument?.fileName}
           {currentDocument?.text}
+        </Col> */}
+        <Col className="md-8 ms-0 ps=2">
+          <PdfTextViewer text={currentDocument?.text}></PdfTextViewer>
         </Col>
-        <Col className="md-5">
+        <Col></Col>
+
+        {/* <Col className="md-5">
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicUsername">
               <Form.Label>Username</Form.Label>
@@ -96,7 +106,7 @@ function TestPage() {
               Submit
             </Button>
           </Form>
-        </Col>
+        </Col> */}
       </Row>
     </>
   );

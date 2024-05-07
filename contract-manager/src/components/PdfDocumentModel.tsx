@@ -1,10 +1,9 @@
 export interface PdfDocument {
-  pdfName: string;
-  id: number;
+  PDF_ID: string;
+  fileName: string;
   text: string;
 }
 
 export interface PdfDocumentListItem {
-  pdfName: string;
-  id: number;
+  PDF_IDs: string;
 }
