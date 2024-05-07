@@ -13,7 +13,7 @@ import ContractsSidebar from "../components/ContractsSidebar";
 import { PdfDocument } from "../components/PdfDocumentModel";
 import { useEffect, useState } from "react";
 import PdfTextViewer from "../components/PdfTextViewer";
-import PdfModifiableTextViewer from "../components/PdfModifiableTextViewer";
+import PdfEditableTextViewer from "../components/PdfEditableTextViewer";
 
 interface Props {
   pdfDocuments: PdfDocument[];
@@ -45,9 +45,9 @@ function DocumentsLayout({ pdfDocuments, isLoading }: Props) {
         <Col>
           {/*TODO: document viewer area for the pdf text that is received, and additional save button for finance*/}
           <PdfTextViewer text={currentDocument?.text}></PdfTextViewer>
-          <PdfModifiableTextViewer
+          <PdfEditableTextViewer
             text={currentDocument?.text}
-          ></PdfModifiableTextViewer>
+          ></PdfEditableTextViewer>
         </Col>
         <Col>{/* TODO: right sideBar */}</Col>
       </Row>

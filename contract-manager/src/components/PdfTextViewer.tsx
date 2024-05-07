@@ -4,15 +4,10 @@ import { PdfDocument } from "./PdfDocumentModel";
 function PdfTextViewer({ text }: { text: string | undefined }) {
   return (
     <>
-      <Col className="mt-4">
-        <Form.Control
-          type="text"
-          placeholder={text || "Empty pdf"}
-          aria-label="Disabled input example"
-          disabled
-          readOnly
-        />
-      </Col>
+      <Col
+        className="mt-4 md-7 p-3"
+        dangerouslySetInnerHTML={{ __html: text?.replace(/\n/g, "<br>") || "" }}
+      />
     </>
   );
 }
