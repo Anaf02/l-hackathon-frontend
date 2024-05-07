@@ -11,18 +11,22 @@
 import { Col, Row } from "react-bootstrap";
 import ContractsSidebar from "../components/ContractsSidebar";
 import { PdfDocument } from "../components/PdfDocumentModel";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PdfTextViewer from "../components/PdfTextViewer";
 import PdfModifiableTextViewer from "../components/PdfModifiableTextViewer";
 
 interface Props {
-  pdfDocuments?: PdfDocument[];
+  pdfDocuments: PdfDocument[];
+  isLoading: boolean;
   // userRole: string;
 }
 
-function DocumentsLayout({ pdfDocuments }: Props) {
+function DocumentsLayout({ pdfDocuments, isLoading }: Props) {
+  const [documents, setDocuments] = useState(pdfDocuments);
+
+  useEffect(() => setDocuments(pdfDocuments), [pdfDocuments]);
   const [currentDocument, setCurrentDocument] = useState<PdfDocument>();
-  console.log(pdfDocuments);
+
   return (
     <>
       <Row>
@@ -33,8 +37,9 @@ function DocumentsLayout({ pdfDocuments }: Props) {
       <Row>
         <Col>
           <ContractsSidebar
-            pdfDocuments={pdfDocuments}
+            pdfDocuments={documents}
             setCurrentDocument={setCurrentDocument}
+            isLoading={isLoading}
           ></ContractsSidebar>
         </Col>
         <Col>

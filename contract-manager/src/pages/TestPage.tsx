@@ -15,6 +15,8 @@ import PdfTextViewer from "../components/PdfTextViewer";
 // Call the simple auth hook here and on submit use the login function
 // (copy and change the example with text field and password field instead of select)
 
+type UserDictionary = { [id: string]: SimpleUserModel };
+
 function TestPage() {
   // const dummyPdfDocuments: PdfDocumentListItem[] = [
   //   {
@@ -50,12 +52,14 @@ function TestPage() {
   const { axiosApi } = useAxios();
   const [currentDocument, setCurrentDocument] = useState<PdfDocument>();
 
-  //  const [user, setUser] = useState<SimpleUserModel[]>([]);
-  //  useEffect(() => {
-  //    axiosApi.get<SimpleUserModel[]>("/user").then((res) => {
-  //      setUser(res.data);
-  //    });
-  //  }, []);
+  const [users, setUsers] = useState<UserDictionary>({});
+  useEffect(() => {
+    axiosApi.get<UserDictionary>("/user").then((res) => {
+      setUsers(res.data);
+    });
+  }, []);
+
+  console.log(users);
 
   return (
     <>

@@ -1,8 +1,8 @@
 export interface SimpleUserModel {
   //TODO: change user model according to backend
-  id: number;
   firstName: string;
   lastName: string;
-  username: string;
+  password: string;
   role: string;
+  username: string;
 }
