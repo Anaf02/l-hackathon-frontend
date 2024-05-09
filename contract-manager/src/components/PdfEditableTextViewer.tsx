@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Button, Col, Form } from "react-bootstrap";
 
-function PdfEditableTextViewer({ text }: { text: string | undefined }) {
+function PdfEditableTextViewer({
+  text,
+  readOnly,
+}: {
+  text: string | undefined;
+  readOnly: boolean;
+}) {
   const [editableText, setEditableText] = useState(text || "");
 
   // Set initial content when component mounts
@@ -9,8 +15,8 @@ function PdfEditableTextViewer({ text }: { text: string | undefined }) {
     setEditableText(text || "");
   }, [text]);
 
-  const handleTextChange = (event: React.FocusEvent<HTMLDivElement>) => {
-    setEditableText(event.target.innerText);
+  const handleTextChange = (event: any) => {
+    setEditableText(event.target.value);
   };
 
   const handleSave = () => {
@@ -21,16 +27,16 @@ function PdfEditableTextViewer({ text }: { text: string | undefined }) {
   return (
     <>
       {text && (
-        <Col
-          className="mt-4 p-3 md-7 editable-text"
-          contentEditable={!!text} // Apply contentEditable only if text has value
-          onBlur={handleTextChange}
-          dangerouslySetInnerHTML={{
-            __html: editableText?.replace(/\n/g, "<br>") || "&nbsp;", // Add a non-breaking space if editableText is empty
-          }}
+        <Form.Control
+          className="p-3 h-100"
+          onChange={handleTextChange}
+          as="textarea"
+          defaultValue={editableText}
+          readOnly={readOnly}
+          disabled={readOnly}
         />
       )}
-      {text && <Button onClick={handleSave}>Save</Button>}
+      {text && !readOnly && <Button onClick={handleSave}>Save</Button>}
     </>
   );
 }

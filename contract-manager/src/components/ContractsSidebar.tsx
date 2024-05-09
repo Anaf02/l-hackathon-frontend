@@ -3,6 +3,7 @@ import "./ContractsSidebar.css";
 import PdfSidebarCard from "./PdfSidebarCard";
 import { PdfDocument } from "./PdfDocumentModel";
 import { useEffect, useState } from "react";
+import SearchBar from "./SearchBar";
 
 interface Props {
   pdfDocuments: PdfDocument[];
@@ -16,6 +17,9 @@ function ContractsSidebar({
   isLoading,
 }: Props) {
   const [documents, setDocuments] = useState(pdfDocuments);
+  const [filteredDocuments, setFilteredDocuments] = useState(pdfDocuments);
+
+  useEffect(() => setFilteredDocuments(pdfDocuments), [pdfDocuments]);
 
   useEffect(() => setDocuments(pdfDocuments), [pdfDocuments]);
   if (isLoading) {
@@ -24,12 +28,17 @@ function ContractsSidebar({
   return (
     <>
       <Nav
-        className="col-md-2 d-none d-md-block bg-light sidebar"
+        className="col-md-2 d-none d-md-block bg-light sidebar p-2"
         activeKey="/home"
         onSelect={(selectedKey) => alert(`selected ${selectedKey}`)}
+        navbarScroll
       >
-        <div className="sidebar-sticky"></div>
-        {documents?.map((pdfDocument, index) => (
+        <SearchBar
+          documents={pdfDocuments}
+          setFilteredDocuments={setFilteredDocuments}
+        />
+        <div className="sidebar-sticky mt-2"></div>
+        {filteredDocuments?.map((pdfDocument, index) => (
           <PdfSidebarCard
             key={index}
             pdfDocument={pdfDocument}
