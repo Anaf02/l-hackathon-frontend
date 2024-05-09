@@ -30,9 +30,7 @@ function DocumentsLayout({ pdfDocuments, isLoading }: Props) {
   return (
     <>
       <Row>
-        <Col>
-          {/* top bar with search and upload for legal, and only search for finance */}
-        </Col>
+        <Col>{/* top bar with search and upload */}</Col>
       </Row>
       <Row>
         <Col>
