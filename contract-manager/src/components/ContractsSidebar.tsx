@@ -28,15 +28,16 @@ function ContractsSidebar({
   return (
     <>
       <Nav
-        className="col-md-2 d-none d-md-block bg-light sidebar"
+        className="col-md-2 d-none d-md-block bg-light sidebar p-2"
         activeKey="/home"
         onSelect={(selectedKey) => alert(`selected ${selectedKey}`)}
+        navbarScroll
       >
         <SearchBar
           documents={pdfDocuments}
           setFilteredDocuments={setFilteredDocuments}
         />
-        <div className="sidebar-sticky"></div>
+        <div className="sidebar-sticky mt-2"></div>
         {filteredDocuments?.map((pdfDocument, index) => (
           <PdfSidebarCard
             key={index}
