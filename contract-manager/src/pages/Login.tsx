@@ -34,7 +34,6 @@ function Login() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    login({ username, password });
     const loginModel = { username, password };
     //console.log(loginModel);
     //console.log("test");
