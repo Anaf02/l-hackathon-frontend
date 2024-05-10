@@ -40,9 +40,18 @@ function Login() {
     //console.log(users);
     const userExists = Object.values(users).some(user => user.username === username && user.password === password);
     if (userExists) {
-        //const user = Object.values(users).find(user => user.username === username && user.password === password);
+      const user = Object.values(users).find(u => u.username === username && u.password === password);
+      /*if(user && user.role === "CEO" ) { // Add null check for user
+        console.log("CEO")
+      } else if(user && user.role === "finance") {
+        console.log("finance")
+      } else if(user && user.role === "legal") {
+        console.log("legal")
+      }*/
+      const role = user?.role; // Add null check for user
+      //const user = Object.values(users).find(user => user.username === username && user.password === password);
         console.log("Login successful!");
-        navigate('/Contracts');  // Navigate to the Contracts page on successful login
+        navigate('/Contracts', { state: { role } });  // Navigate to the Contracts page on successful login
     } else {
         console.log("Login failed!");  // Debug log for a failed login
         setShowToast(true);  // Show the toast notification on failure
