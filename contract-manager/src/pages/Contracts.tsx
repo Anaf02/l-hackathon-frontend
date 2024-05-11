@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import DocumentsLayout from "../Layout/DocumentsLayout";
 import { useAxios } from "../components/Context/AuthContext/SimpleAxiosContextWithAuth";
-
+import { useLocation } from 'react-router-dom';
 //import { useSimpleAuth } from "../components/Context/AuthContext/useSimpleAuthHook";
 import { PdfDocument } from "../components/PdfDocumentModel";
 
@@ -18,6 +18,10 @@ function Contracts() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [pdfIds, setPdfIds] = useState<string[]>();
+
+  const location = useLocation();
+  const role = location.state?.role;
+  console.log("party at"+role);
 
   const createDocumentList = useCallback(
     async (pdfIdsArray: string[]) => {
@@ -63,6 +67,7 @@ function Contracts() {
         pdfDocuments={pdfDocuments}
         isLoading={loading}
         // userRole={userData?.role || ""}
+        // userRole={role || ""}
       ></DocumentsLayout>
     </>
   );
