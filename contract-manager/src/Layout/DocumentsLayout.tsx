@@ -15,6 +15,9 @@ import { useEffect, useState } from "react";
 import PdfEditableTextViewer from "../components/PdfEditableTextViewer";
 import { useSimpleAuth } from "../components/Context/AuthContext/useSimpleAuthHook";
 import PdfImportantText from "../components/PdfImportantText";
+import ToastNotification from "../components/ToastNotification";
+import Dates from "../components/Dates";
+
 
 interface Props {
   pdfDocuments: PdfDocument[];
@@ -25,6 +28,11 @@ interface Props {
 function DocumentsLayout({ pdfDocuments, isLoading, userRole }: Props) {
   const [documents, setDocuments] = useState(pdfDocuments);
   const { logout } = useSimpleAuth();
+  const [showToast, setShowToast] = useState(false);
+
+  const handleCloseToast = () => {
+    setShowToast(false);
+  };
 
   useEffect(() => setDocuments(pdfDocuments), [pdfDocuments]);
   const [currentDocument, setCurrentDocument] = useState<PdfDocument>();
@@ -62,6 +70,17 @@ function DocumentsLayout({ pdfDocuments, isLoading, userRole }: Props) {
               Logout
             </Button>
             <PdfImportantText pdfDocument={currentDocument} />
+            <Dates text={currentDocument?.text || ""} />
+            {userRole === "CEO" && (
+              <Button onClick={() => setShowToast(true)}>Sign</Button>
+            )}
+            {showToast && (
+            <ToastNotification
+              title={"Success"}
+              text={"Sent to sign"}
+             onClose={handleCloseToast}
+            />
+            )}
           </Col>
         </Row>
       </Container>
