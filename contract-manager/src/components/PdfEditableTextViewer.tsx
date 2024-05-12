@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { useAxios } from "./Context/AuthContext/SimpleAxiosContextWithAuth";
 import { PdfDocument } from "./PdfDocumentModel";
+import { useSimpleAuth } from "./Context/AuthContext/useSimpleAuthHook";
 
 function PdfEditableTextViewer({
   pdfDocument,
@@ -12,6 +13,7 @@ function PdfEditableTextViewer({
 }) {
   const [document, setDocument] = useState(pdfDocument);
   const { axiosApi } = useAxios();
+  const { userData } = useSimpleAuth();
   // Set initial content when component mounts
   useEffect(() => {
     setDocument(pdfDocument);
@@ -54,18 +56,22 @@ function PdfEditableTextViewer({
         />
       )}
       {document && !readOnly && (
-        <Row className="d-flex justify-content-between mt-2">
-          <Col>
-            <Button className="mt-2" variant="success" onClick={handleSave}>
-              Save
-            </Button>
-          </Col>
-          <Col>
-            <Button className="mt-2" variant="outline-dark">
-              E-sign
-            </Button>
-          </Col>
-        </Row>
+        <>
+          <Row className="d-flex justify-content-between mt-2">
+            <Col>
+              <Button className="mt-2" variant="success" onClick={handleSave}>
+                Save
+              </Button>
+            </Col>
+            {userData?.role === "CEO" && (
+              <Col>
+                <Button className="mt-2" variant="outline-dark">
+                  E-sign
+                </Button>
+              </Col>
+            )}
+          </Row>
+        </>
       )}
     </>
   );
