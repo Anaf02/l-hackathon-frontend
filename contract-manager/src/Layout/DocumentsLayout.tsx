@@ -8,29 +8,26 @@
 // - On document list item click => display document in viewer and change right bar details. => implement using a useState Hook where on click you set current document to the one clicked
 // - Right bar receives current document as prop, document viewer receives document as a prop.
 
-import { Col, Container, Form, Row } from "react-bootstrap";
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import ContractsSidebar from "../components/ContractsSidebar";
 import { PdfDocument } from "../components/PdfDocumentModel";
 import { useEffect, useState } from "react";
-import PdfTextViewer from "../components/PdfTextViewer";
 import PdfEditableTextViewer from "../components/PdfEditableTextViewer";
+import { useSimpleAuth } from "../components/Context/AuthContext/useSimpleAuthHook";
+import PdfImportantText from "../components/PdfImportantText";
 
 interface Props {
   pdfDocuments: PdfDocument[];
   isLoading: boolean;
-  // userRole: string;
+  userRole: string;
 }
 
-function DocumentsLayout({ pdfDocuments, isLoading }: Props) {
+function DocumentsLayout({ pdfDocuments, isLoading, userRole }: Props) {
   const [documents, setDocuments] = useState(pdfDocuments);
-  const [role, setRole] = useState<number>(1);
+  const { logout } = useSimpleAuth();
 
   useEffect(() => setDocuments(pdfDocuments), [pdfDocuments]);
   const [currentDocument, setCurrentDocument] = useState<PdfDocument>();
-
-  const handleRoleChange = (event: any) => {
-    setRole(event.target.value);
-  };
 
   return (
     <>
@@ -44,26 +41,27 @@ function DocumentsLayout({ pdfDocuments, isLoading }: Props) {
             />
           </Col>
           <Col md="8" className="vh-100">
-            <Row>
-              <Col className="mt-4 md-7 p-3">
-                <Form.Select onChange={handleRoleChange}>
-                  <option value="1">Finance Role</option>
-                  <option value="2">Legal Role</option>
-                </Form.Select>
-              </Col>
-            </Row>
             <Row className="h-75">
               <Col className="mt-4 md-7 h-100">
                 <PdfEditableTextViewer
-                  readOnly={role == 2}
-                  text={currentDocument?.text}
+                  readOnly={userRole == "legal"}
+                  pdfDocument={currentDocument}
                 />
               </Col>
             </Row>
           </Col>
           <Col md="2">
             {/* TODO: right sideBar */}
-            <h1>Important information</h1>
+            <Button
+              className="ml-auto mt-2"
+              variant="info"
+              onClick={(e) => {
+                logout();
+              }}
+            >
+              Logout
+            </Button>
+            <PdfImportantText pdfDocument={currentDocument} />
           </Col>
         </Row>
       </Container>

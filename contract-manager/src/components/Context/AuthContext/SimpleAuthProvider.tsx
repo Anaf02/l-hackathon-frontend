@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
 import useLocalStorage from "../localStorageHook";
@@ -22,12 +22,27 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 
   const login = React.useCallback(
     async (formData: SimpleLoginModel) => {
-      axios
-        .post(`${process.env.REACT_APP_BASE_URL}/login`, formData)
+      let users: SimpleUserModel[] = await axios
+        .get<SimpleUserModel[]>(`${process.env.REACT_APP_BASE_URL}/user`)
         .then((res) => {
-          setUserData(res.data);
-          setIsAuthenticated(true);
+          return res.data;
+        })
+        .catch((error) => {
+          console.error("Error fetching users", error);
+          return [];
         });
+
+      const user = Object.values(users).find(
+        (u) =>
+          u.username === formData.username && u.password === formData.password
+      );
+      if (!!user) {
+        setIsAuthenticated(true);
+        setUserData(user);
+        return true;
+      } else {
+        return false;
+      }
     },
     [setIsAuthenticated, setUserData]
   );

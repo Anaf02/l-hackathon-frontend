@@ -4,9 +4,11 @@ import { SimpleLoginModel } from "./SimpleLoginModel";
 
 export interface SimpleAuthContext {
   userData: SimpleUserModel | null;
-  login: (formData: SimpleLoginModel) => void;
+  login: (formData: SimpleLoginModel) => Promise<boolean>;
   logout: () => void;
   isAuthenticated: boolean;
 }
 
-export const simpleAuthContext = createContext<SimpleAuthContext>({} as SimpleAuthContext);
+export const simpleAuthContext = createContext<SimpleAuthContext>(
+  {} as SimpleAuthContext
+);
