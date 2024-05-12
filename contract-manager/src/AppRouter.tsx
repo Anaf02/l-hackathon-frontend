@@ -9,8 +9,9 @@ import Contracts from "./pages/Contracts";
 function AppRouter() {
   return (
     <Routes>
-      <Route path="/" element={<TestPage />} />
+      {/* <Route path="/" element={<TestPage />} /> */}
       <Route path="/home" element={<Home />} />
+      <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       {/* <Route path="/contracts" element={<Contracts />} /> */}
 

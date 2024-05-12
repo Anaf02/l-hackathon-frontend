@@ -31,7 +31,7 @@ function ContractsSidebar({
         className="col-md-2 d-none d-md-block bg-light sidebar p-2"
         activeKey="/home"
         onSelect={(selectedKey) => alert(`selected ${selectedKey}`)}
-        navbarScroll
+        style={{ maxHeight: "calc(100vh - 56px)", overflowY: "auto" }}
       >
         <SearchBar
           documents={pdfDocuments}

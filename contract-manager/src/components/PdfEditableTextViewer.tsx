@@ -1,42 +1,72 @@
 import React, { useState, useEffect } from "react";
-import { Button, Col, Form } from "react-bootstrap";
+import { Button, Col, Form, Row } from "react-bootstrap";
+import { useAxios } from "./Context/AuthContext/SimpleAxiosContextWithAuth";
+import { PdfDocument } from "./PdfDocumentModel";
 
 function PdfEditableTextViewer({
-  text,
+  pdfDocument,
   readOnly,
 }: {
-  text: string | undefined;
+  pdfDocument: PdfDocument | undefined;
   readOnly: boolean;
 }) {
-  const [editableText, setEditableText] = useState(text || "");
-
+  const [document, setDocument] = useState(pdfDocument);
+  const { axiosApi } = useAxios();
   // Set initial content when component mounts
   useEffect(() => {
-    setEditableText(text || "");
-  }, [text]);
+    setDocument(pdfDocument);
+  }, [pdfDocument]);
 
   const handleTextChange = (event: any) => {
-    setEditableText(event.target.value);
+    if (document !== undefined) {
+      const newDoc: PdfDocument = {
+        ...document,
+        text: event.currentTarget.value,
+      };
+      setDocument(newDoc);
+    }
   };
 
-  const handleSave = () => {
-    // Handle save action, e.g., send the modified text to the backend
-    console.log("Modified text:", editableText);
+  const handleSave = (e: any) => {
+    e.preventDefault();
+    try {
+      if (!document) return; // Do nothing if no document selected
+
+      axiosApi.put(`/pdf/${document.PDF_ID}`, {
+        text: document.text,
+      });
+    } catch (error) {
+      console.error("Error saving PDF text:", error);
+    }
   };
 
   return (
     <>
-      {text && (
+      {document && (
         <Form.Control
           className="p-3 h-100"
           onChange={handleTextChange}
           as="textarea"
-          defaultValue={editableText}
+          value={document.text}
           readOnly={readOnly}
           disabled={readOnly}
+          spellCheck={false}
         />
       )}
-      {text && !readOnly && <Button onClick={handleSave}>Save</Button>}
+      {document && !readOnly && (
+        <Row className="d-flex justify-content-between mt-2">
+          <Col>
+            <Button className="mt-2" variant="success" onClick={handleSave}>
+              Save
+            </Button>
+          </Col>
+          <Col>
+            <Button className="mt-2" variant="outline-dark">
+              E-sign
+            </Button>
+          </Col>
+        </Row>
+      )}
     </>
   );
 }

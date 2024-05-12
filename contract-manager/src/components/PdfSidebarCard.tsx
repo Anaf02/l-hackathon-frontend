@@ -51,7 +51,7 @@ const PdfSidebarCard: React.FC<Props> = ({
     <Card className="pdf-card">
       <Card.Body>
         <Card.Title>{pdfDocument.fileName}</Card.Title>
-        <Button variant="primary" onClick={handleClick}>
+        <Button variant="dark" onClick={handleClick}>
           View
         </Button>
       </Card.Body>

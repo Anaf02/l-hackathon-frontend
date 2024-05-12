@@ -12,9 +12,9 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import ContractsSidebar from "../components/ContractsSidebar";
 import { PdfDocument } from "../components/PdfDocumentModel";
 import { useEffect, useState } from "react";
-import PdfTextViewer from "../components/PdfTextViewer";
 import PdfEditableTextViewer from "../components/PdfEditableTextViewer";
 import { useSimpleAuth } from "../components/Context/AuthContext/useSimpleAuthHook";
+import PdfImportantText from "../components/PdfImportantText";
 
 interface Props {
   pdfDocuments: PdfDocument[];
@@ -45,7 +45,7 @@ function DocumentsLayout({ pdfDocuments, isLoading, userRole }: Props) {
               <Col className="mt-4 md-7 h-100">
                 <PdfEditableTextViewer
                   readOnly={userRole == "legal"}
-                  text={currentDocument?.text}
+                  pdfDocument={currentDocument}
                 />
               </Col>
             </Row>
@@ -53,14 +53,15 @@ function DocumentsLayout({ pdfDocuments, isLoading, userRole }: Props) {
           <Col md="2">
             {/* TODO: right sideBar */}
             <Button
-              className="ml-auto"
+              className="ml-auto mt-2"
+              variant="info"
               onClick={(e) => {
                 logout();
               }}
             >
               Logout
             </Button>
-            <h1>Important information</h1>
+            <PdfImportantText pdfDocument={currentDocument} />
           </Col>
         </Row>
       </Container>
